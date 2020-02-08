@@ -507,6 +507,44 @@ void music_scale_user(void)
 
 void matrix_scan_user(void) {
      iota_gfx_task();  // this is what updates the display continuously
+
+
+    uint8_t layer = biton32(layer_state); // get current layer
+    static uint8_t current_layer; // check historic layer
+    static bool has_layer_changed = true;
+    // static, so it is kept the same between calls
+    // defaults to true, so that it runs once to initially set the light
+
+
+    if (layer != current_layer)
+    {
+        has_layer_changed = true;
+        current_layer = layer; // update layer information
+    }
+    // Check for layer change, and apply color if its changed since last check
+    if (has_layer_changed) {
+        switch (layer) {
+            case _QWERTY:
+                // INSERT CODE HERE: turn on leds that correspond to YOUR_LAYER_1
+                break;
+            case _LOWER:
+                // INSERT CODE HERE: turn on leds that correspond to YOUR_LAYER_2
+                rgblight_sethsv_at(HSV_RED,   1);
+                break;
+            case _RAISE:
+                rgblight_sethsv(HSV_GREEN);
+                // INSERT CODE HERE: turn on leds that correspond to YOUR_LAYER_2
+                break;
+            case _ADJUST:
+                // INSERT CODE HERE: turn on leds that correspond to YOUR_LAYER_2
+                rgblight_sethsv(HSV_YELLOW);
+                break;
+            // add case for each layer
+        }
+        has_layer_changed = false;
+    }
+
+
 }
 
 void matrix_update(struct CharacterMatrix *dest,
