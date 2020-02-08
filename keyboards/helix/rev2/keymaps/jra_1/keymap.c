@@ -313,6 +313,24 @@ float music_scale[][2]     = SONG(MUSIC_SCALE_SOUND);
 // define variables for reactive RGB
 bool TOG_STATUS = false;
 int RGB_current_mode;
+uint8_t RGB_current_hue = -1;
+
+void jralight_sethsv_rows(int color1, int color2, int color3) {
+    uint8_t sat = rgblight_get_sat();
+    uint8_t val = rgblight_get_val();
+    rgblight_sethsv_at(color1, sat, val, 3);
+    rgblight_sethsv_at(color1, sat, val, 7);
+    rgblight_sethsv_at(color1, sat, val, 17);
+    rgblight_sethsv_at(color2, sat, val, 2);
+    rgblight_sethsv_at(color2, sat, val, 8);
+    rgblight_sethsv_at(color2, sat, val, 16);
+    rgblight_sethsv_at(color2, sat, val, 18);
+    rgblight_sethsv_at(color3, sat, val, 1);
+    rgblight_sethsv_at(color3, sat, val, 9);
+    rgblight_sethsv_at(color3, sat, val, 15);
+    rgblight_sethsv_at(color3, sat, val, 19);
+    rgblight_sethsv_at(color3, sat, val, 31);
+}
 
 void persistent_default_layer_set(uint16_t default_layer) {
   eeconfig_update_default_layer(default_layer);
@@ -425,6 +443,24 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       #endif
       return false;
       break;
+    case RGB_HUI:
+      #ifdef RGBLIGHT_ENABLE
+        if (record->event.pressed) {
+          rgblight_increase_hue();
+          RGB_current_hue = rgblight_get_hue();
+        }
+      #endif
+      return false;
+      break;
+    case RGB_HUD:
+      #ifdef RGBLIGHT_ENABLE
+        if (record->event.pressed) {
+          rgblight_decrease_hue();
+          RGB_current_hue = rgblight_get_hue();
+        }
+      #endif
+      return false;
+      break;
     case EISU:
       if (record->event.pressed) {
         if(keymap_config.swap_lalt_lgui==false){
@@ -509,12 +545,22 @@ void matrix_scan_user(void) {
      iota_gfx_task();  // this is what updates the display continuously
 
 
+
     uint8_t layer = biton32(layer_state); // get current layer
+    uint8_t hue;
+    uint8_t complement;
+    uint8_t complementD;
+    uint8_t complementI;
     static uint8_t current_layer; // check historic layer
     static bool has_layer_changed = true;
+    static bool first_run = true;
     // static, so it is kept the same between calls
     // defaults to true, so that it runs once to initially set the light
 
+    if (first_run) {
+        RGB_current_hue = rgblight_get_hue();
+        first_run = false;
+    }
 
     if (layer != current_layer)
     {
@@ -526,18 +572,35 @@ void matrix_scan_user(void) {
         switch (layer) {
             case _QWERTY:
                 // INSERT CODE HERE: turn on leds that correspond to YOUR_LAYER_1
+                hue = RGB_current_hue;
+                complement = abs(hue - 128);
+                complementD = abs(complement - 43);
+                complementI = (complement + 43) % 256;
+
+                rgblight_sethsv(hue, rgblight_get_sat(), rgblight_get_val());
+
+                if (isLeftHand) {
+                    jralight_sethsv_rows(complementD, complement, complementI);
+                }
+                
                 break;
             case _LOWER:
-                // INSERT CODE HERE: turn on leds that correspond to YOUR_LAYER_2
-                rgblight_sethsv_at(HSV_RED,   1);
+                rgblight_decrease_hue();
+                rgblight_decrease_hue();
+                rgblight_decrease_hue();
                 break;
             case _RAISE:
-                rgblight_sethsv(HSV_GREEN);
-                // INSERT CODE HERE: turn on leds that correspond to YOUR_LAYER_2
+                rgblight_increase_hue();
+                rgblight_increase_hue();
+                rgblight_increase_hue();
                 break;
             case _ADJUST:
-                // INSERT CODE HERE: turn on leds that correspond to YOUR_LAYER_2
-                rgblight_sethsv(HSV_YELLOW);
+                rgblight_decrease_hue();
+                rgblight_decrease_hue();
+                rgblight_decrease_hue();
+                rgblight_decrease_hue();
+                rgblight_decrease_hue();
+                rgblight_decrease_hue();
                 break;
             // add case for each layer
         }
