@@ -27,6 +27,7 @@ enum layer_number {
     _QWERTY = 0,
     _LOWER,
     _RAISE,
+    _NUMP,
     _ADJUST
 };
 
@@ -34,6 +35,7 @@ enum custom_keycodes {
   QWERTY = SAFE_RANGE,
   LOWER,
   RAISE,
+  NUMP,
   ADJUST,
   BACKLIT,
   EISU,
@@ -69,27 +71,27 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
       KC_TAB,  KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,                      KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    KC_EQL, \
       KC_LCTL, KC_A,    KC_S,    KC_D,    KC_F,    KC_G,                      KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, KC_MINS, \
       KC_LSFT, KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_LBRC, KC_RBRC, KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, KC_ENT, \
-      ADJUST,   KC_DEL,  KC_NO,   KC_LALT, KC_LGUI, KC_SPC, LOWER,   RAISE,   KC_BSPC, KC_QUOT, KC_LEFT, KC_DOWN, KC_UP,   KC_RGHT \
+      ADJUST,  KC_DEL,  NUMP,    KC_LALT, KC_LGUI, KC_SPC,  LOWER,   RAISE,   KC_BSPC, KC_QUOT, KC_LEFT, KC_DOWN, KC_UP,   KC_RGHT \
       ),
 
   /* Lower
    * ,-----------------------------------------.             ,-----------------------------------------.
-   * |   ~  |   !  |   @  |   #  |   $  |   %  |             |   ^  |   &  |   *  |   (  |   )  |      |
+   * |  F1  |  F2  |  F3  |  F4  |  F5  |  F6  |             |  F7  |  F8  |  F9  |  F10 |  F11 |  F12 |
    * |------+------+------+------+------+------|             |------+------+------+------+------+------|
    * |   ~  |   !  |   @  |   #  |   $  |   %  |             |   ^  |   &  |   *  |   (  |   )  |      |
    * |------+------+------+------+------+------|             |------+------+------+------+------+------|
-   * |      |  F1  |  F2  |  F3  |  F4  |  F5  |             |  F6  |   _  |   +  |   {  |   }  |  |   |
+   * |      |      |      |      |      |      |             |      |   _  |   +  |   {  |   }  |  |   |
    * |------+------+------+------+------+------+------+------+------+------+------+------+------+------|
-   * | CAPS |  F7  |  F8  |  F9  |  F10 |  F11 |  (   |   )  |  F12 |      |      | Home | End  |      |
+   * | CAPS |      |      |      |      |      |  (   |   )  |      |      |      | Home | End  |      |
    * |------+------+------+------+------+------+------+------+------+------+------+------+------+------|
    * |      |      |      |      |      |      |      |      |      |      | Next | Vol- | Vol+ | Play |
    * `-------------------------------------------------------------------------------------------------'
    */
   [_LOWER] = LAYOUT( \
+      KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,   KC_F6,                     KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_F11,  KC_F12, \
       KC_TILD, KC_EXLM, KC_AT,   KC_HASH, KC_DLR,  KC_PERC,                   KC_CIRC, KC_AMPR, KC_ASTR, KC_LPRN, KC_RPRN, _______, \
-      KC_TILD, KC_EXLM, KC_AT,   KC_HASH, KC_DLR,  KC_PERC,                   KC_CIRC, KC_AMPR, KC_ASTR, KC_LPRN, KC_RPRN, _______, \
-      _______, KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,                     KC_F6,   KC_UNDS, KC_PLUS, KC_LCBR, KC_RCBR, KC_PIPE, \
-      KC_CAPS, KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_F11,  KC_LPRN, KC_RPRN, KC_F12,  _______, _______, KC_HOME, KC_END,  _______, \
+      _______, _______, _______, _______, _______, _______,                   _______, KC_UNDS, KC_PLUS, KC_LCBR, KC_RCBR, KC_PIPE, \
+      KC_CAPS, _______, _______, _______, _______, _______, KC_LPRN, KC_RPRN, _______, _______, _______, KC_HOME, KC_END,  _______, \
       _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, KC_MNXT, KC_VOLD, KC_VOLU, KC_MPLY \
       ),
 
@@ -116,6 +118,27 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
   /* Adjust (Lower + Raise)
    * ,-----------------------------------------.             ,-----------------------------------------.
+   * |      |      |      |      |      |      |             |      |      |      |      |      |      |
+   * |------+------+------+------+------+------|             |------+------+------+------+------+------|
+   * |      |      |      |      |      |      |             |      |   7  |   8  |   9  |      |      |
+   * |------+------+------+------+------+------|             |------+------+------+------+------+------|
+   * |      |      |      |      |      |      |             |      |   4  |   5  |   6  |      |      |
+   * |------+------+------+------+------+------+------+------+------+------+------+------+------+------|
+   * |      |      |      |      |      |      |      |      |      |   1  |   2  |   3  |      |      |
+   * |------+------+------+------+------+------+------+------+------+------+------+------+------+------|
+   * |      |      |      |      |      |      |      |      |      |   0  |   0  |   .  |      |      |
+   * `-------------------------------------------------------------------------------------------------'
+   */
+  [_NUMP] = LAYOUT( \
+      _______, _______, _______, _______, _______, _______,                   _______, _______, _______, _______, _______, _______, \
+      _______, _______, _______, _______, _______, _______,                   _______, KC_7,    KC_8,    KC_9,    _______, _______, \
+      _______, _______, _______, _______, _______, _______,                   _______, KC_4,    KC_5,    KC_6,    _______, _______, \
+      _______, _______, _______, _______, _______, _______, _______, _______, _______, KC_1,    KC_2,    KC_3,    _______, _______, \
+      _______, _______, _______, _______, _______, _______, _______, _______, _______, KC_0,    KC_0,    KC_DOT,  _______, _______ \
+      ),
+
+  /* Adjust (Lower + Raise)
+   * ,-----------------------------------------.             ,-----------------------------------------.
    * |  F1  |  F2  |  F3  |  F4  |  F5  |  F6  |             |  F7  |  F8  |  F9  |  F10 |  F11 |  F12 |
    * |------+------+------+------+------+------|             |------+------+------+------+------+------|
    * |      | Reset|RGBRST|      |      |      |             |      |      |      |      |      |  Del |
@@ -128,11 +151,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
    * `-------------------------------------------------------------------------------------------------'
    */
   [_ADJUST] =  LAYOUT( \
-      KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,   KC_F6,                     KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_F11,  KC_F12, \
-      _______, RESET,   RGBRST,  _______, _______, _______,                   _______, _______, _______, _______, _______, KC_DEL, \
-      _______, _______, _______, AU_ON,   AU_OFF,  AG_NORM,                   AG_SWAP, QWERTY,  _______, _______,  _______, _______, \
-      _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, RGB_TOG, RGB_HUI, RGB_SAI, RGB_VAI, \
-      _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, RGB_MOD, RGB_HUD, RGB_SAD, RGB_VAD \
+      KC_F1,   KC_F2,      KC_F3,      KC_F4,    KC_F5,      KC_F6,                     KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_F11,  KC_F12, \
+      _______, C(G(KC_Q)), RGBRST,     _______,  _______,    _______,                   _______, _______, _______, _______, _______, KC_DEL, \
+      _______, _______,    _______,    AU_ON,    AU_OFF,     AG_NORM,                   AG_SWAP, QWERTY,  _______, _______,  _______, _______, \
+      _______, C(S(KC_Z)), C(S(KC_X)), C(KC_UP), C(S(KC_A)), RGB_HUI, _______, _______, _______, _______, RGB_TOG, RGB_HUI, RGB_SAI, RGB_VAI, \
+      _______, _______,    _______,    _______,  _______,    RGB_HUD, _______, _______, _______, _______, RGB_MOD, RGB_HUD, RGB_SAD, RGB_VAD \
       )
 };
 
@@ -152,11 +175,13 @@ float music_scale[][2]     = SONG(MUSIC_SCALE_SOUND);
 // define variables for reactive RGB
 bool TOG_STATUS = false;
 int RGB_current_mode;
-uint8_t RGB_current_hue = -1;
+uint8_t RGB_current_hue;
+uint8_t RGB_current_sat;
+uint8_t RGB_current_val;
 
 void jralight_sethsv_rows(int color1, int color2, int color3) {
-    uint8_t sat = rgblight_get_sat();
-    uint8_t val = rgblight_get_val();
+    uint8_t sat = RGB_current_sat;
+    uint8_t val = RGB_current_val;
     rgblight_sethsv_at(color1, sat, val, 3);
     rgblight_sethsv_at(color1, sat, val, 7);
     rgblight_sethsv_at(color1, sat, val, 17);
@@ -169,6 +194,13 @@ void jralight_sethsv_rows(int color1, int color2, int color3) {
     rgblight_sethsv_at(color3, sat, val, 15);
     rgblight_sethsv_at(color3, sat, val, 19);
     rgblight_sethsv_at(color3, sat, val, 31);
+}
+
+void jralight_dim(int kc[], int size) {
+    for (int i = 0; i < size; i++)
+    {
+        rgblight_sethsv_at(RGB_current_hue, 0, 50, kc[i]);
+    }
 }
 
 void persistent_default_layer_set(uint16_t default_layer) {
@@ -245,6 +277,14 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       }
       return false;
       break;
+    case NUMP:
+        if (record->event.pressed) {
+          layer_on(_NUMP);
+        } else {
+          layer_off(_NUMP);
+        }
+        return false;
+        break;
     case ADJUST:
         if (record->event.pressed) {
           layer_on(_ADJUST);
@@ -282,6 +322,42 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       #endif
       return false;
       break;
+    case RGB_SAI:
+      #ifdef RGBLIGHT_ENABLE
+        if (record->event.pressed) {
+          rgblight_increase_sat();
+          RGB_current_sat = rgblight_get_sat();
+        }
+      #endif
+      return false;
+      break;
+    case RGB_SAD:
+      #ifdef RGBLIGHT_ENABLE
+        if (record->event.pressed) {
+          rgblight_decrease_sat();
+          RGB_current_sat = rgblight_get_sat();
+        }
+      #endif
+      return false;
+      break;
+    case RGB_VAI:
+      #ifdef RGBLIGHT_ENABLE
+        if (record->event.pressed) {
+          rgblight_increase_val();
+          RGB_current_val = rgblight_get_val();
+        }
+      #endif
+      return false;
+      break;
+    case RGB_VAD:
+      #ifdef RGBLIGHT_ENABLE
+        if (record->event.pressed) {
+          rgblight_decrease_val();
+          RGB_current_val = rgblight_get_val();
+        }
+      #endif
+      return false;
+      break;
     case EISU:
       if (record->event.pressed) {
         if(keymap_config.swap_lalt_lgui==false){
@@ -311,6 +387,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         if (record->event.pressed) {
           eeconfig_update_rgblight_default();
           rgblight_enable();
+          RGB_current_hue = rgblight_get_hue();
           RGB_current_mode = rgblight_config.mode;
         }
       #endif
@@ -372,6 +449,12 @@ void matrix_scan_user(void) {
     uint8_t complement;
     uint8_t complementD;
     uint8_t complementI;
+    int nump_dim_kc[20] = {0,1,2,3,4,5,6,7,11,12,16,17,18,19,23,24,25,26,30,31};
+    int nump_dim_lkc[11] = {8,9,10,13,14,15,20,21,22,27,28};
+    int adj_dim_kc[22] = {0,1,2,3,4,5,6,8,9,10,11,12,13,14,15,16,17,23,24,25,26,27};
+    int adj_dim_rkc[2] = {7,22};
+    int adj_dim_lkc[4] = {18,28,29,30};
+
     static uint8_t current_layer; // check historic layer
     static bool has_layer_changed = true;
     static bool first_run = true;
@@ -380,6 +463,8 @@ void matrix_scan_user(void) {
 
     if (first_run) {
         RGB_current_hue = rgblight_get_hue();
+        RGB_current_sat = rgblight_get_sat();
+        RGB_current_val = rgblight_get_val();
         first_run = false;
     }
 
@@ -398,7 +483,7 @@ void matrix_scan_user(void) {
                 complementD = abs(complement - 43);
                 complementI = (complement + 43) % 256;
 
-                rgblight_sethsv(hue, rgblight_get_sat(), rgblight_get_val());
+                rgblight_sethsv(hue, RGB_current_sat, RGB_current_val);
 
                 if (isLeftHand) {
                     jralight_sethsv_rows(complementD, complement, complementI);
@@ -406,22 +491,36 @@ void matrix_scan_user(void) {
                 
                 break;
             case _LOWER:
+                hue = abs(RGB_current_hue - 64);
                 rgblight_decrease_hue();
                 rgblight_decrease_hue();
                 rgblight_decrease_hue();
                 break;
             case _RAISE:
+                hue = (complement + 64) % 256;
                 rgblight_increase_hue();
                 rgblight_increase_hue();
                 rgblight_increase_hue();
                 break;
+            case _NUMP:
+                hue = abs(RGB_current_hue - 128);
+
+                rgblight_sethsv(hue, RGB_current_sat, RGB_current_val);
+                jralight_dim(nump_dim_kc, 20);
+                if (isLeftHand) {
+                    jralight_dim(nump_dim_lkc, 11);
+                }
+                break;
             case _ADJUST:
-                rgblight_decrease_hue();
-                rgblight_decrease_hue();
-                rgblight_decrease_hue();
-                rgblight_decrease_hue();
-                rgblight_decrease_hue();
-                rgblight_decrease_hue();
+                hue = abs(RGB_current_hue - 85);
+
+                rgblight_sethsv(hue, RGB_current_sat, RGB_current_val);
+                jralight_dim(adj_dim_kc, 22);
+                if (isLeftHand) {
+                    jralight_dim(adj_dim_lkc, 4);
+                } else {
+                    jralight_dim(adj_dim_rkc, 2);
+                }
                 break;
             // add case for each layer
         }
