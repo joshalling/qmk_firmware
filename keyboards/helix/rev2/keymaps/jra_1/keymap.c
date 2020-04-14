@@ -71,7 +71,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
       KC_TAB,  KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,                      KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    KC_EQL, \
       KC_LCTL, KC_A,    KC_S,    KC_D,    KC_F,    KC_G,                      KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, KC_MINS, \
       KC_LSFT, KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_LBRC, KC_RBRC, KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, KC_ENT, \
-      ADJUST,  KC_DEL,  NUMP,    KC_LALT, KC_LGUI, KC_SPC,  LOWER,   RAISE,   KC_BSPC, KC_QUOT, KC_LEFT, KC_DOWN, KC_UP,   KC_RGHT \
+      ADJUST,  NUMP,  KC_DEL,    KC_LALT, KC_LGUI, KC_SPC,  LOWER,   RAISE,   KC_BSPC, KC_QUOT, KC_LEFT, KC_DOWN, KC_UP,   KC_RGHT \
       ),
 
   /* Lower
@@ -478,8 +478,10 @@ void matrix_scan_user(void) {
     uint8_t complementD;
     uint8_t complementI;
 
-    int nump_dim_kc[20] = {0,1,2,3,4,5,6,7,11,12,16,17,18,19,23,24,25,26,30,31};
-    int nump_dim_lkc[11] = {8,9,10,13,14,15,20,21,22,27,28};
+    int nump_dim_rkc[20] = {0,1,2,3,4,5,6,7,11,12,16,17,18,19,23,24,25,26,30,31};
+    int nump_dim_lkc[31] = {0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,31};
+    int nump_rkc[12] = {8,9,10,13,14,15,20,21,22,27,28,29};
+    int nump_lkc[1] = {30};
     int adj_dim_lkc[25] = {0,1,2,3,4,5,6,9,10,11,12,13,14,15,16,17,18,23,24,25,26,27,28,29,30};
     int adj_dim_rkc[24] = {0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,22,23,24,25,26,27};
     int adj_lkc[7] = {7,8,19,20,21,22,31};
@@ -535,10 +537,12 @@ void matrix_scan_user(void) {
             case _NUMP:
                 hue = abs(RGB_current_hue - 128);
 
-                rgblight_sethsv(hue, RGB_current_sat, RGB_current_val);
-                jralight_dim(nump_dim_kc, 20);
                 if (isLeftHand) {
-                    jralight_dim(nump_dim_lkc, 11);
+                    jralight_dim(nump_dim_lkc, 31);
+                    jralight_color(hue, nump_lkc, 1);
+                } else {
+                    jralight_dim(nump_dim_rkc, 20);
+                    jralight_color(hue, nump_rkc, 12);
                 }
                 break;
             case _ADJUST:
